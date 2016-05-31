@@ -33,6 +33,15 @@ under 		  "_"
 string 		\"(\\.|[^"])*\"
 
 %%
+0[xX]{H}+{IS}?		{ return CONSTANT; }
+0{D}+{IS}?		{ return CONSTANT; }
+{D}+{IS}?		{ return CONSTANT; }
+L?'(\\.|[^\\'])+'	{ return CONSTANT; }
+
+{D}+{E}{FS}?		{ return CONSTANT; }
+{D}*"."{D}+({E})?{FS}?	{ return CONSTANT; }
+{D}+"."{D}*({E})?{FS}?	{ return CONSTANT; }
+
 "<<=" {operators ++; token_total ++; strcpy(name,yytext); return SHLEQUAL;}
 ">>=" { operators ++; token_total ++;strcpy(name,yytext); return SHREQUAL;}
 "++" { operators ++; token_total ++;strcpy(name,yytext); return PLUSPLUS;}
