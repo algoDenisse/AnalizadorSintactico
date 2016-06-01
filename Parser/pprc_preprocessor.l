@@ -7,6 +7,7 @@
 	#include <stdio.h>
 	#include <ctype.h>
 	#include "global.h"
+	#include "parser.c"
 	int includeCounter = 0;
 	int defineCounter = 0;
 	char _name[1024] = "";

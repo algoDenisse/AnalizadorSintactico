@@ -4,7 +4,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
-int yylex();
+int yyerror(char *s);
+int yylex(void);
+FILE * yyin;
 %}
 
 /* BISON Declarations */
@@ -432,11 +434,11 @@ function_definition
 /*C code */
 
 
-/*int main( int argc, char *argv[] )
+int main( int argc, char *argv[] )
 {
   char filename [100]="";
 	printf( "Ingrese el archivo: ");
 	scanf("%s",filename);
-	FILE *originalFile = fopen( filename, "r" );
+	yyin = fopen( filename, "r" );
   yyparse ();
-}*/
+}

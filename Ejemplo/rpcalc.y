@@ -7,26 +7,32 @@
 #include <ctype.h>
 %}
 
+/* BISON Declarations */
 %token NUM
+%left '-' '+'
+%left '*' '/'
+%left NEG     /* negation--unary minus */
+%right '^'    /* exponentiation        */
 
-%% /* Grammar rules and actions follow */
-input:    /* empty */
+/* Grammar follows */
+%%
+input:    /* empty string */
         | input line
 ;
 
 line:     '\n'
         | exp '\n'  { printf ("\t%.10g\n", $1); }
+        | error '\n' { yyerrok;                 }
 ;
 
-exp:      NUM             { $$ = $1;         }
-        | exp exp '+'     { $$ = $1 + $2;    }
-        | exp exp '-'     { $$ = $1 - $2;    }
-        | exp exp '*'     { $$ = $1 * $2;    }
-        | exp exp '/'     { $$ = $1 / $2;    }
-      /* Exponentiation */
-        | exp exp '^'     { $$ = pow ($1, $2); }
-      /* Unary minus    */
-        | exp 'n'         { $$ = -$1;        }
+exp:      NUM                { $$ = $1;         }
+        | exp '+' exp        { $$ = $1 + $3;    }
+        | exp '-' exp        { $$ = $1 - $3;    }
+        | exp '*' exp        { $$ = $1 * $3;    }
+        | exp '/' exp        { $$ = $1 / $3;    }
+        | '-' exp  %prec NEG { $$ = -$2;        }
+        | exp '^' exp        { $$ = pow ($1, $3); }
+        | '(' exp ')'        { $$ = $2;         }
 ;
 %%
 
