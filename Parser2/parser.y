@@ -406,9 +406,13 @@ selection_statement
 
 iteration_statement
 	: WHILE '(' expression ')' statement
+	| WHILE '('error ')' { yyerrok; yyclearin;     }
 	| DO statement WHILE '(' expression ')' ';'
+	| DO statement WHILE '(' error ')' { yyerrok; yyclearin;     }  
 	| FOR '(' expression_statement expression_statement ')' statement
 	| FOR '(' expression_statement expression_statement expression ')' statement
+	| FOR '(' error ')' { yyerrok; yyclearin;     }
+
 	;
 
 jump_statement
