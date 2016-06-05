@@ -1,8 +1,10 @@
+#include "chara.c"
+
 int main ()
 {
    char ch;
 
-   for(ch = 'A'  ch <= 'Z' ; ch++)
+   for(ch = 'A'; ch <= 'Z' ; ch++)
    {
       putchar(ch)
    }

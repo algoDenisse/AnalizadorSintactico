@@ -12,20 +12,22 @@ E			[Ee][+-]?{D}+
 FS			(f|F|l|L)
 IS			(u|U|l|L)*
 
+
+%x incl
+
 %{
 #include <stdio.h>
 #include "parser.tab.h"
 static void comment(void);
 static int check_type(void);
-
+void readIncludeFile(char *filename);
 void count();
 void _remove();
 %}
-
 %%
+
 "/*"			{ comment(); }
-#[ \t]*define[ \t]+ { _remove(); return DEFINE;}
-#[ \t]*include[ \t]+ { _remove(); return INCLUDE;}
+
 "auto"			{ count(); return(AUTO); }
 "break"			{ count(); return(BREAK); }
 "case"			{ count(); return(CASE); }
@@ -123,7 +125,41 @@ L?\"(\\.|[^\\"])*\"	{ count(); return(STRING_LITERAL); }
 [ \t\v\n\f]		{ count(); }
 .			{ /* ignore bad characters */ }
 
+#include             BEGIN(incl);
+<incl>[ \t]*      /* eat the whitespace */
+<incl>[^ "\t\n]+   { /* got the include file name */
+											printf("Voy a intentar abril el fle %s\n", yytext);
+
+											readIncludeFile(yytext);
+
+											BEGIN(INITIAL);
+
+										}
+
+<<EOF>> {
+     			yypop_buffer_state();
+					if ( !YY_CURRENT_BUFFER ){
+              yyterminate();
+          }
+        }
+
 %%
+
+void readIncludeFile(char *filename){
+	FILE *file = fopen( filename, "r" );
+	if (file){
+			printf("Si logramos abrir el file \n");
+			YY_BUFFER_STATE bufferInclude = yy_create_buffer(file,YY_BUF_SIZE);
+			if(bufferInclude){
+				yypush_buffer_state(YY_CURRENT_BUFFER);
+				yy_switch_to_buffer (bufferInclude);
+			}
+
+		}
+	else{
+		printf("Problem with incluyeme file\n");
+	}
+}
 
 void _remove(){
 

@@ -1,0 +1,3 @@
+void printSomething(){
+  int i
+}

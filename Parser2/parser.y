@@ -14,6 +14,7 @@ extern int yylex();
 int yyparse();
 int yylineno;
 
+
 FILE *yyin;
 void yyerror(const char *s);
 %}
@@ -39,7 +40,7 @@ primary_expression
 	| CONSTANT
 	| STRING_LITERAL
 	| '(' expression ')'
-	| error '\n' { yyerrok; yyclearin;     }
+
 	;
 
 postfix_expression
@@ -401,6 +402,7 @@ expression_statement
 selection_statement
 	: IF '(' expression ')' statement
 	| IF '(' expression ')' statement ELSE statement
+	| IF '(' error ')' {yyerrok; yyclearin;}
 	| SWITCH '(' expression ')' statement
 	;
 
@@ -408,7 +410,7 @@ iteration_statement
 	: WHILE '(' expression ')' statement
 	| WHILE '('error ')' { yyerrok; yyclearin;     }
 	| DO statement WHILE '(' expression ')' ';'
-	| DO statement WHILE '(' error ')' { yyerrok; yyclearin;     }  
+	| DO statement WHILE '(' error ')' { yyerrok; yyclearin;     }
 	| FOR '(' expression_statement expression_statement ')' statement
 	| FOR '(' expression_statement expression_statement expression ')' statement
 	| FOR '(' error ')' { yyerrok; yyclearin;     }
@@ -426,12 +428,12 @@ jump_statement
 translation_unit
 	: external_declaration
 	| translation_unit external_declaration
-
 	;
 
 external_declaration
 	: function_definition
 	| declaration
+	| error { yyerrok; yyclearin;}
 	;
 
 function_definition
@@ -439,6 +441,7 @@ function_definition
 	| declaration_specifiers declarator compound_statement
 	| declarator declaration_list compound_statement
 	| declarator compound_statement
+
 	;
 
 %%
