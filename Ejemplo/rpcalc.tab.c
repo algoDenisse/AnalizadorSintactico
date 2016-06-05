@@ -1521,18 +1521,7 @@ yyerror (s)  /* Called by yyparse on error */
   printf ("%s\n", s);
 }
 
-
-
-
-main( argc, argv ){
-int argc;
-char **argv;
-    {
-    if ( argc > 0 )
-            yyin = fopen( argv[0], "r" );
-    else
-            yyin = stdin;
-
-    yyparse ();
-    }
+main ()
+{
+  yyparse ();
 }

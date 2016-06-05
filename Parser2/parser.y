@@ -4,35 +4,42 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
-int yyerror(char *s);
-int yylex(void);
-FILE * yyin;
-%}
 
-/* BISON Declarations */
-%token ID CONSTANT STRING SIZEOF DEFINE VALUE SPACE NEWLINE QUOTES LIBRARY CODIGO
-%token ARROW PLUSPLUS MINUSMINUS SHL SHR LEQ GEQ EQUAL NOTEQUAL DIVEQUAL MODEQUAL
-%token AND OR MUL DIV MOD PLUSEQUAL MULEQUAL ELLIPSIS INCLUDE PRINTSTRING
-%token MINUSEQUAL SHLEQUAL SHREQUAL ANDEQUAL FILENAME TAB LESSMORE
-%token ROOFEQUAL OREQUAL ASSIGN PLUS MINUS BITAND BITOR ROOF TAIL LESS GREATER
-%token TYPEDEF EXTERN STATIC AUTO REGISTER UNDERSCORE SINGLEQUOTE LPAREN RPAREN
+
+extern char yytext[];
+extern int column;
+
+// stuff from flex that bison needs to know about:
+extern int yylex();
+int yyparse();
+int yylineno;
+
+FILE *yyin;
+void yyerror(const char *s);
+%}
+%define parse.error verbose
+
+%token IDENTIFIER CONSTANT STRING_LITERAL SIZEOF
+%token PTR_OP INC_OP DEC_OP LEFT_OP RIGHT_OP LE_OP GE_OP EQ_OP NE_OP
+%token AND_OP OR_OP MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN
+%token SUB_ASSIGN LEFT_ASSIGN RIGHT_ASSIGN AND_ASSIGN
+%token XOR_ASSIGN OR_ASSIGN TYPE_NAME
+
+%token TYPEDEF EXTERN STATIC AUTO REGISTER
 %token CHAR SHORT INT LONG SIGNED UNSIGNED FLOAT DOUBLE CONST VOLATILE VOID
-%token STRUCT UNION ENUM CORCHL CORCHR LBRACKET RBRACKET BACKSLASH COMMENTOPEN COMMENTCLOSE
+%token STRUCT UNION ENUM ELLIPSIS DEFINE INCLUDE
+
 %token CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN
-%token UNCLOSEDCOMMENT COLON QUESTIONMARK NOT SEMICOLON COMMA PERIOD DOUBLEQUOTE
-%token IFSYS ELSESYS WHILELOOP FORLOOP PRINTF FPRINTF FOPEN FCLOSE SYSTEM STRCPY
-%token STRCMP EXIT TRUE FALSE TOUPPER FEOF GETC MEMSET CALLOC MALLOC NUMBER UNKNOWN
 
 %start translation_unit
-
-/* Grammar follows */
 %%
 
 primary_expression
-	: ID
+	: IDENTIFIER
 	| CONSTANT
-	| STRING
+	| STRING_LITERAL
 	| '(' expression ')'
+	| error '\n' { yyerrok; yyclearin;     }
 	;
 
 postfix_expression
@@ -40,10 +47,10 @@ postfix_expression
 	| postfix_expression '[' expression ']'
 	| postfix_expression '(' ')'
 	| postfix_expression '(' argument_expression_list ')'
-	| postfix_expression '.' ID
-	| postfix_expression ARROW ID
-	| postfix_expression PLUSPLUS
-	| postfix_expression MINUSMINUS
+	| postfix_expression '.' IDENTIFIER
+	| postfix_expression PTR_OP IDENTIFIER
+	| postfix_expression INC_OP
+	| postfix_expression DEC_OP
 	;
 
 argument_expression_list
@@ -53,8 +60,8 @@ argument_expression_list
 
 unary_expression
 	: postfix_expression
-	| PLUSPLUS unary_expression
-	| MINUSMINUS unary_expression
+	| INC_OP unary_expression
+	| DEC_OP unary_expression
 	| unary_operator cast_expression
 	| SIZEOF unary_expression
 	| SIZEOF '(' type_name ')'
@@ -89,22 +96,22 @@ additive_expression
 
 shift_expression
 	: additive_expression
-	| shift_expression SHL additive_expression
-	| shift_expression SHR additive_expression
+	| shift_expression LEFT_OP additive_expression
+	| shift_expression RIGHT_OP additive_expression
 	;
 
 relational_expression
 	: shift_expression
 	| relational_expression '<' shift_expression
 	| relational_expression '>' shift_expression
-	| relational_expression LEQ shift_expression
-	| relational_expression GEQ shift_expression
+	| relational_expression LE_OP shift_expression
+	| relational_expression GE_OP shift_expression
 	;
 
 equality_expression
 	: relational_expression
-	| equality_expression EQUAL relational_expression
-	| equality_expression NOTEQUAL relational_expression
+	| equality_expression EQ_OP relational_expression
+	| equality_expression NE_OP relational_expression
 	;
 
 and_expression
@@ -124,12 +131,12 @@ inclusive_or_expression
 
 logical_and_expression
 	: inclusive_or_expression
-	| logical_and_expression AND inclusive_or_expression
+	| logical_and_expression AND_OP inclusive_or_expression
 	;
 
 logical_or_expression
 	: logical_and_expression
-	| logical_or_expression OR logical_and_expression
+	| logical_or_expression OR_OP logical_and_expression
 	;
 
 conditional_expression
@@ -144,16 +151,16 @@ assignment_expression
 
 assignment_operator
 	: '='
-	| MULEQUAL
-	| DIVEQUAL
-	| MODEQUAL
-	| PLUSEQUAL
-	| MINUSEQUAL
-	| SHLEQUAL
-	| SHREQUAL
-	| ANDEQUAL
-	| ROOFEQUAL
-	| OREQUAL
+	| MUL_ASSIGN
+	| DIV_ASSIGN
+	| MOD_ASSIGN
+	| ADD_ASSIGN
+	| SUB_ASSIGN
+	| LEFT_ASSIGN
+	| RIGHT_ASSIGN
+	| AND_ASSIGN
+	| XOR_ASSIGN
+	| OR_ASSIGN
 	;
 
 expression
@@ -209,13 +216,13 @@ type_specifier
 	| UNSIGNED
 	| struct_or_union_specifier
 	| enum_specifier
-	| TYPEDEF
+	| TYPE_NAME
 	;
 
 struct_or_union_specifier
-	: struct_or_union ID '{' struct_declaration_list '}'
+	: struct_or_union IDENTIFIER '{' struct_declaration_list '}'
 	| struct_or_union '{' struct_declaration_list '}'
-	| struct_or_union ID
+	| struct_or_union IDENTIFIER
 	;
 
 struct_or_union
@@ -252,8 +259,8 @@ struct_declarator
 
 enum_specifier
 	: ENUM '{' enumerator_list '}'
-	| ENUM ID '{' enumerator_list '}'
-	| ENUM ID
+	| ENUM IDENTIFIER '{' enumerator_list '}'
+	| ENUM IDENTIFIER
 	;
 
 enumerator_list
@@ -262,8 +269,8 @@ enumerator_list
 	;
 
 enumerator
-	: ID
-	| ID '=' constant_expression
+	: IDENTIFIER
+	| IDENTIFIER '=' constant_expression
 	;
 
 type_qualifier
@@ -277,7 +284,7 @@ declarator
 	;
 
 direct_declarator
-	: ID
+	: IDENTIFIER
 	| '(' declarator ')'
 	| direct_declarator '[' constant_expression ']'
 	| direct_declarator '[' ']'
@@ -316,8 +323,8 @@ parameter_declaration
 	;
 
 identifier_list
-	: ID
-	| identifier_list ',' ID
+	: IDENTIFIER
+	| identifier_list ',' IDENTIFIER
 	;
 
 type_name
@@ -364,7 +371,7 @@ statement
 	;
 
 labeled_statement
-	: ID ':' statement
+	: IDENTIFIER ':' statement
 	| CASE constant_expression ':' statement
 	| DEFAULT ':' statement
 	;
@@ -405,7 +412,7 @@ iteration_statement
 	;
 
 jump_statement
-	: GOTO ID ';'
+	: GOTO IDENTIFIER ';'
 	| CONTINUE ';'
 	| BREAK ';'
 	| RETURN ';'
@@ -415,6 +422,7 @@ jump_statement
 translation_unit
 	: external_declaration
 	| translation_unit external_declaration
+
 	;
 
 external_declaration
@@ -431,14 +439,28 @@ function_definition
 
 %%
 
-/*C code */
 
-
-int main( int argc, char *argv[] )
+void yyerror(const char *s)
 {
-  char filename [100]="";
-	printf( "Ingrese el archivo: ");
-	scanf("%s",filename);
-	yyin = fopen( filename, "r" );
-  yyparse ();
+	fflush(stdout);
+	printf("\n%*s\n%*s in line: %d\n", column, "^", column, s, yylineno);
+}
+
+int main( int argc, char *argv[]) {
+	// open a file handle to a particular file:
+	FILE *myfile = fopen("processedFile.c", "r");
+	// make sure it is valid:
+	if (!myfile) {
+		printf("I can't open my processed file!\n");
+		exit(0);
+	}
+
+	// set flex to read from it instead of defaulting to STDIN:
+	yyin = myfile;
+
+	// parse through the input until there is no more:
+	do {
+		yyparse();
+	} while (!feof(yyin));
+
 }
