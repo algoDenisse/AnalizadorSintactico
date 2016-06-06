@@ -30,8 +30,10 @@ int yylineno;
 FILE *beamerFile;
 FILE *yyin;
 void yyerror(const char *s);
-void readFile(FILE *filename);
+void beamerParseFile(FILE *filename);
+void parseFile(FILE *filename);
 
+char specialCommand[2];
 
 
 
@@ -234,25 +236,54 @@ void yyerror(const char *s)
 }
 
 
-void readFile(FILE *filename){
+void beamerParseFile(FILE *filename){
 		yyin = filename;
 		FILE* fpLatex = freopen("fuenteLatex.txt","w",stdout);
 		yyparse();
 		fclose(fpLatex);
 
+}
 
+void parseFile(FILE *filename){
+		yyin = filename;
+		yyparse();
+		
 
 }
 
 int main( int argc, char *argv[]) {
-
-	FILE *myfile = fopen("processedFile.c", "r");
-
+	
+	strcpy(specialCommand, "-B");
+	char filename [100]="";
+	printf( "Ingrese el archivo: ");
+	scanf("%s",filename);
+	
+	if (strcmp(filename,specialCommand)==0){
+		
+		char filename [100]="";
+		printf( "Ingrese el archivo para Beamer: ");
+		scanf("%s",filename);
+		FILE *bFile = fopen(filename, "r");
+		
+		if (!bFile) {
+			printf("I can't open my processed file!\n");
+			exit(0);
+		}
+		
+		beamerParseFile(bFile);
+		exit(0);
+	}
+	
+	FILE *myfile = fopen(filename, "r");
+	
 	if (!myfile) {
 		printf("I can't open my processed file!\n");
 		exit(0);
 	}
+	
+	parseFile(myfile);
 
-	readFile(myfile);
+
+	
 
 }

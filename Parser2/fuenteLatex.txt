@@ -1,29 +1,6 @@
-""void sayHi(){
+void sayHi(){
   printf("Helloooooo\n" )
 }
 ^
 syntax error, unexpected '}', expecting ',' or ';' in line: 3
-
-
-void printSomething(){
-  int i
-}
-^
-syntax error, unexpected '}', expecting ',' or ';' in line: 7
-
-
-
-int main ()
-{
-   char ch;
-
-   for(ch = 'A'; ch <= 'Z' ; ch++)
-   {
-      putchar(ch);
-   }
-
-   return(0)
-}
-^
-syntax error, unexpected '}', expecting ',' or ';' in line: 20
 
