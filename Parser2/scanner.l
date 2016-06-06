@@ -1,7 +1,7 @@
 %option yylineno
 %option header-file = "prep_scanner.h"
 %option outfile = "prep_scanner.c"
-%option noyywrap
+
 %option yylineno
 
 
@@ -23,6 +23,18 @@ static int check_type(void);
 void readIncludeFile(char *filename);
 void count();
 void _remove();
+
+extern int yyparse();
+int yylineno;
+
+FILE *beamerFile;
+FILE *yyin;
+void yyerror(const char *s);
+void readFile(FILE *filename);
+
+
+
+
 %}
 %%
 
@@ -128,7 +140,6 @@ L?\"(\\.|[^\\"])*\"	{ count(); return(STRING_LITERAL); }
 #include             BEGIN(incl);
 <incl>[ \t]*      /* eat the whitespace */
 <incl>[^ "\t\n]+   { /* got the include file name */
-											printf("Voy a intentar abril el fle %s\n", yytext);
 
 											readIncludeFile(yytext);
 
@@ -141,6 +152,7 @@ L?\"(\\.|[^\\"])*\"	{ count(); return(STRING_LITERAL); }
 					if ( !YY_CURRENT_BUFFER ){
               yyterminate();
           }
+
         }
 
 %%
@@ -148,7 +160,6 @@ L?\"(\\.|[^\\"])*\"	{ count(); return(STRING_LITERAL); }
 void readIncludeFile(char *filename){
 	FILE *file = fopen( filename, "r" );
 	if (file){
-			printf("Si logramos abrir el file \n");
 			YY_BUFFER_STATE bufferInclude = yy_create_buffer(file,YY_BUF_SIZE);
 			if(bufferInclude){
 				yypush_buffer_state(YY_CURRENT_BUFFER);
@@ -160,6 +171,8 @@ void readIncludeFile(char *filename){
 		printf("Problem with incluyeme file\n");
 	}
 }
+
+
 
 void _remove(){
 
@@ -209,4 +222,37 @@ void count()
 static int check_type()
 {
 	return(IDENTIFIER);
+}
+
+
+
+void yyerror(const char *s)
+{
+	fflush(stdout);
+	printf("\n%*s\n%*s in line: %d\n", column, "^", column, s, yylineno);
+
+}
+
+
+void readFile(FILE *filename){
+		yyin = filename;
+		FILE* fpLatex = freopen("fuenteLatex.txt","w",stdout);
+		yyparse();
+		fclose(fpLatex);
+
+
+
+}
+
+int main( int argc, char *argv[]) {
+
+	FILE *myfile = fopen("processedFile.c", "r");
+
+	if (!myfile) {
+		printf("I can't open my processed file!\n");
+		exit(0);
+	}
+
+	readFile(myfile);
+
 }

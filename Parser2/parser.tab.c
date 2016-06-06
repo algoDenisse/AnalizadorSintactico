@@ -73,14 +73,15 @@ extern char yytext[];
 extern int column;
 
 // stuff from flex that bison needs to know about:
-extern int yylex();
-int yyparse();
+//extern int yylex();
+/*extern int yyparse();
 int yylineno;
 
+FILE *beamerFile;
 FILE *yyin;
-void yyerror(const char *s);
+void yyerror(const char *s);*/
 
-#line 84 "parser.tab.c" /* yacc.c:339  */
+#line 85 "parser.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -115,6 +116,7 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
+    T_EOF = 0,
     IDENTIFIER = 258,
     CONSTANT = 259,
     STRING_LITERAL = 260,
@@ -194,7 +196,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 198 "parser.tab.c" /* yacc.c:358  */
+#line 200 "parser.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -497,28 +499,28 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    38,    38,    39,    40,    41,    46,    47,    48,    49,
-      50,    51,    52,    53,    57,    58,    62,    63,    64,    65,
-      66,    67,    71,    72,    73,    74,    75,    76,    80,    81,
-      85,    86,    87,    88,    92,    93,    94,    98,    99,   100,
-     104,   105,   106,   107,   108,   112,   113,   114,   118,   119,
-     123,   124,   128,   129,   133,   134,   138,   139,   143,   144,
-     148,   149,   153,   154,   155,   156,   157,   158,   159,   160,
-     161,   162,   163,   167,   168,   172,   176,   177,   181,   182,
-     183,   184,   185,   186,   190,   191,   195,   196,   200,   201,
-     202,   203,   204,   208,   209,   210,   211,   212,   213,   214,
-     215,   216,   217,   218,   219,   223,   224,   225,   229,   230,
-     234,   235,   239,   243,   244,   245,   246,   250,   251,   255,
-     256,   257,   261,   262,   263,   267,   268,   272,   273,   277,
-     278,   282,   283,   287,   288,   289,   290,   291,   292,   293,
-     297,   298,   299,   300,   304,   305,   310,   311,   315,   316,
-     320,   321,   322,   326,   327,   331,   332,   336,   337,   338,
-     342,   343,   344,   345,   346,   347,   348,   349,   350,   354,
-     355,   356,   360,   361,   365,   366,   367,   368,   369,   370,
-     374,   375,   376,   380,   381,   382,   383,   387,   388,   392,
-     393,   397,   398,   402,   403,   404,   405,   409,   410,   411,
-     412,   413,   414,   415,   420,   421,   422,   423,   424,   428,
-     429,   433,   434,   435,   439,   440,   441,   442
+       0,    39,    39,    40,    41,    42,    47,    48,    49,    50,
+      51,    52,    53,    54,    58,    59,    63,    64,    65,    66,
+      67,    68,    72,    73,    74,    75,    76,    77,    81,    82,
+      86,    87,    88,    89,    93,    94,    95,    99,   100,   101,
+     105,   106,   107,   108,   109,   113,   114,   115,   119,   120,
+     124,   125,   129,   130,   134,   135,   139,   140,   144,   145,
+     149,   150,   154,   155,   156,   157,   158,   159,   160,   161,
+     162,   163,   164,   168,   169,   173,   177,   178,   182,   183,
+     184,   185,   186,   187,   191,   192,   196,   197,   201,   202,
+     203,   204,   205,   209,   210,   211,   212,   213,   214,   215,
+     216,   217,   218,   219,   220,   224,   225,   226,   230,   231,
+     235,   236,   240,   244,   245,   246,   247,   251,   252,   256,
+     257,   258,   262,   263,   264,   268,   269,   273,   274,   278,
+     279,   283,   284,   288,   289,   290,   291,   292,   293,   294,
+     298,   299,   300,   301,   305,   306,   311,   312,   316,   317,
+     321,   322,   323,   327,   328,   332,   333,   337,   338,   339,
+     343,   344,   345,   346,   347,   348,   349,   350,   351,   355,
+     356,   357,   361,   362,   366,   367,   368,   369,   370,   371,
+     375,   376,   377,   381,   382,   383,   384,   388,   389,   393,
+     394,   398,   399,   403,   404,   405,   406,   410,   411,   412,
+     413,   414,   415,   416,   421,   422,   423,   424,   425,   429,
+     430,   434,   435,   436,   440,   441,   442,   443
 };
 #endif
 
@@ -527,7 +529,7 @@ static const yytype_uint16 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "IDENTIFIER", "CONSTANT",
+  "\"end of file\"", "error", "$undefined", "IDENTIFIER", "CONSTANT",
   "STRING_LITERAL", "SIZEOF", "PTR_OP", "INC_OP", "DEC_OP", "LEFT_OP",
   "RIGHT_OP", "LE_OP", "GE_OP", "EQ_OP", "NE_OP", "AND_OP", "OR_OP",
   "MUL_ASSIGN", "DIV_ASSIGN", "MOD_ASSIGN", "ADD_ASSIGN", "SUB_ASSIGN",
@@ -1755,37 +1757,37 @@ yyreduce:
   switch (yyn)
     {
         case 195:
-#line 404 "parser.y" /* yacc.c:1646  */
+#line 405 "parser.y" /* yacc.c:1646  */
     {yyerrok; yyclearin;}
-#line 1761 "parser.tab.c" /* yacc.c:1646  */
+#line 1763 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 198:
-#line 410 "parser.y" /* yacc.c:1646  */
+#line 411 "parser.y" /* yacc.c:1646  */
     { yyerrok; yyclearin;     }
-#line 1767 "parser.tab.c" /* yacc.c:1646  */
+#line 1769 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 200:
-#line 412 "parser.y" /* yacc.c:1646  */
+#line 413 "parser.y" /* yacc.c:1646  */
     { yyerrok; yyclearin;     }
-#line 1773 "parser.tab.c" /* yacc.c:1646  */
+#line 1775 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 203:
-#line 415 "parser.y" /* yacc.c:1646  */
+#line 416 "parser.y" /* yacc.c:1646  */
     { yyerrok; yyclearin;     }
-#line 1779 "parser.tab.c" /* yacc.c:1646  */
+#line 1781 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 213:
-#line 435 "parser.y" /* yacc.c:1646  */
+#line 436 "parser.y" /* yacc.c:1646  */
     { yyerrok; yyclearin;}
-#line 1785 "parser.tab.c" /* yacc.c:1646  */
+#line 1787 "parser.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1789 "parser.tab.c" /* yacc.c:1646  */
+#line 1791 "parser.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2013,31 +2015,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 446 "parser.y" /* yacc.c:1906  */
+#line 447 "parser.y" /* yacc.c:1906  */
 
-
-
-void yyerror(const char *s)
-{
-	fflush(stdout);
-	printf("\n%*s\n%*s in line: %d\n", column, "^", column, s, yylineno);
-}
-
-int main( int argc, char *argv[]) {
-	// open a file handle to a particular file:
-	FILE *myfile = fopen("processedFile.c", "r");
-	// make sure it is valid:
-	if (!myfile) {
-		printf("I can't open my processed file!\n");
-		exit(0);
-	}
-
-	// set flex to read from it instead of defaulting to STDIN:
-	yyin = myfile;
-
-	// parse through the input until there is no more:
-	do {
-		yyparse();
-	} while (!feof(yyin));
-
-}

@@ -45,6 +45,7 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
+    T_EOF = 0,
     IDENTIFIER = 258,
     CONSTANT = 259,
     STRING_LITERAL = 260,

@@ -10,16 +10,16 @@ extern char yytext[];
 extern int column;
 
 // stuff from flex that bison needs to know about:
-extern int yylex();
-int yyparse();
+//extern int yylex();
+/*extern int yyparse();
 int yylineno;
 
-
+FILE *beamerFile;
 FILE *yyin;
-void yyerror(const char *s);
+void yyerror(const char *s);*/
 %}
 %define parse.error verbose
-
+%token T_EOF 0 "end of file"
 %token IDENTIFIER CONSTANT STRING_LITERAL SIZEOF
 %token PTR_OP INC_OP DEC_OP LEFT_OP RIGHT_OP LE_OP GE_OP EQ_OP NE_OP
 %token AND_OP OR_OP MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN ADD_ASSIGN
@@ -445,29 +445,3 @@ function_definition
 	;
 
 %%
-
-
-void yyerror(const char *s)
-{
-	fflush(stdout);
-	printf("\n%*s\n%*s in line: %d\n", column, "^", column, s, yylineno);
-}
-
-int main( int argc, char *argv[]) {
-	// open a file handle to a particular file:
-	FILE *myfile = fopen("processedFile.c", "r");
-	// make sure it is valid:
-	if (!myfile) {
-		printf("I can't open my processed file!\n");
-		exit(0);
-	}
-
-	// set flex to read from it instead of defaulting to STDIN:
-	yyin = myfile;
-
-	// parse through the input until there is no more:
-	do {
-		yyparse();
-	} while (!feof(yyin));
-
-}

@@ -9,4 +9,4 @@ ejecutableDenisse:
 	# gcc -o parser parser.tab.c -lm
 	bison -d parser.y
 	flex scanner.l
-	gcc -o parser parser.tab.c  prep_scanner.c  -lfl
+	gcc -o  prep_scanner parser.tab.c   prep_scanner.c   -lfl

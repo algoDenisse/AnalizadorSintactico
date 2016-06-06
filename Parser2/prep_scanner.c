@@ -354,9 +354,6 @@ void yyfree (void *  );
 
 /* Begin user sect3 */
 
-#define yywrap(n) 1
-#define YY_SKIP_YYWRAP
-
 typedef unsigned char YY_CHAR;
 
 FILE *yyin = (FILE *) 0, *yyout = (FILE *) 0;
@@ -678,7 +675,19 @@ static int check_type(void);
 void readIncludeFile(char *filename);
 void count();
 void _remove();
-#line 682 "prep_scanner.c"
+
+extern int yyparse();
+int yylineno;
+
+FILE *beamerFile;
+FILE *yyin;
+void yyerror(const char *s);
+void readFile(FILE *filename);
+
+
+
+
+#line 691 "prep_scanner.c"
 
 #define INITIAL 0
 #define incl 1
@@ -866,10 +875,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 27 "scanner.l"
+#line 39 "scanner.l"
 
 
-#line 873 "prep_scanner.c"
+#line 882 "prep_scanner.c"
 
 	if ( !(yy_init) )
 		{
@@ -964,477 +973,476 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 29 "scanner.l"
+#line 41 "scanner.l"
 { comment(); }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 31 "scanner.l"
+#line 43 "scanner.l"
 { count(); return(AUTO); }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 32 "scanner.l"
+#line 44 "scanner.l"
 { count(); return(BREAK); }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 33 "scanner.l"
+#line 45 "scanner.l"
 { count(); return(CASE); }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 34 "scanner.l"
+#line 46 "scanner.l"
 { count(); return(CHAR); }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 35 "scanner.l"
+#line 47 "scanner.l"
 { count(); return(CONST); }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 36 "scanner.l"
+#line 48 "scanner.l"
 { count(); return(CONTINUE); }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 37 "scanner.l"
+#line 49 "scanner.l"
 { count(); return(DEFAULT); }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 38 "scanner.l"
+#line 50 "scanner.l"
 { count(); return(DO); }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 39 "scanner.l"
+#line 51 "scanner.l"
 { count(); return(DOUBLE); }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 40 "scanner.l"
+#line 52 "scanner.l"
 { count(); return(ELSE); }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 41 "scanner.l"
+#line 53 "scanner.l"
 { count(); return(ENUM); }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 42 "scanner.l"
+#line 54 "scanner.l"
 { count(); return(EXTERN); }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 43 "scanner.l"
+#line 55 "scanner.l"
 { count(); return(FLOAT); }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 44 "scanner.l"
+#line 56 "scanner.l"
 { count(); return(FOR); }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 45 "scanner.l"
+#line 57 "scanner.l"
 { count(); return(GOTO); }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 46 "scanner.l"
+#line 58 "scanner.l"
 { count(); return(IF); }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 47 "scanner.l"
+#line 59 "scanner.l"
 { count(); return(INT); }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 48 "scanner.l"
+#line 60 "scanner.l"
 { count(); return(LONG); }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 49 "scanner.l"
+#line 61 "scanner.l"
 { count(); return(REGISTER); }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 50 "scanner.l"
+#line 62 "scanner.l"
 { count(); return(RETURN); }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 51 "scanner.l"
+#line 63 "scanner.l"
 { count(); return(SHORT); }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 52 "scanner.l"
+#line 64 "scanner.l"
 { count(); return(SIGNED); }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 53 "scanner.l"
+#line 65 "scanner.l"
 { count(); return(SIZEOF); }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 54 "scanner.l"
+#line 66 "scanner.l"
 { count(); return(STATIC); }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 55 "scanner.l"
+#line 67 "scanner.l"
 { count(); return(STRUCT); }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 56 "scanner.l"
+#line 68 "scanner.l"
 { count(); return(SWITCH); }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 57 "scanner.l"
+#line 69 "scanner.l"
 { count(); return(TYPEDEF); }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 58 "scanner.l"
+#line 70 "scanner.l"
 { count(); return(UNION); }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 59 "scanner.l"
+#line 71 "scanner.l"
 { count(); return(UNSIGNED); }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 60 "scanner.l"
+#line 72 "scanner.l"
 { count(); return(VOID); }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 61 "scanner.l"
+#line 73 "scanner.l"
 { count(); return(VOLATILE); }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 62 "scanner.l"
+#line 74 "scanner.l"
 { count(); return(WHILE); }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 64 "scanner.l"
+#line 76 "scanner.l"
 { count(); return(check_type()); }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 66 "scanner.l"
+#line 78 "scanner.l"
 { count(); return(CONSTANT); }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 67 "scanner.l"
+#line 79 "scanner.l"
 { count(); return(CONSTANT); }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 68 "scanner.l"
+#line 80 "scanner.l"
 { count(); return(CONSTANT); }
 	YY_BREAK
 case 38:
 /* rule 38 can match eol */
 YY_RULE_SETUP
-#line 69 "scanner.l"
+#line 81 "scanner.l"
 { count(); return(CONSTANT); }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 71 "scanner.l"
+#line 83 "scanner.l"
 { count(); return(CONSTANT); }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 72 "scanner.l"
+#line 84 "scanner.l"
 { count(); return(CONSTANT); }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 73 "scanner.l"
+#line 85 "scanner.l"
 { count(); return(CONSTANT); }
 	YY_BREAK
 case 42:
 /* rule 42 can match eol */
 YY_RULE_SETUP
-#line 75 "scanner.l"
+#line 87 "scanner.l"
 { count(); return(STRING_LITERAL); }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 77 "scanner.l"
+#line 89 "scanner.l"
 { count(); return(ELLIPSIS); }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 78 "scanner.l"
+#line 90 "scanner.l"
 { count(); return(RIGHT_ASSIGN); }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 79 "scanner.l"
+#line 91 "scanner.l"
 { count(); return(LEFT_ASSIGN); }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 80 "scanner.l"
+#line 92 "scanner.l"
 { count(); return(ADD_ASSIGN); }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 81 "scanner.l"
+#line 93 "scanner.l"
 { count(); return(SUB_ASSIGN); }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 82 "scanner.l"
+#line 94 "scanner.l"
 { count(); return(MUL_ASSIGN); }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 83 "scanner.l"
+#line 95 "scanner.l"
 { count(); return(DIV_ASSIGN); }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 84 "scanner.l"
+#line 96 "scanner.l"
 { count(); return(MOD_ASSIGN); }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 85 "scanner.l"
+#line 97 "scanner.l"
 { count(); return(AND_ASSIGN); }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 86 "scanner.l"
+#line 98 "scanner.l"
 { count(); return(XOR_ASSIGN); }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 87 "scanner.l"
+#line 99 "scanner.l"
 { count(); return(OR_ASSIGN); }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 88 "scanner.l"
+#line 100 "scanner.l"
 { count(); return(RIGHT_OP); }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 89 "scanner.l"
+#line 101 "scanner.l"
 { count(); return(LEFT_OP); }
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 90 "scanner.l"
+#line 102 "scanner.l"
 { count(); return(INC_OP); }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 91 "scanner.l"
+#line 103 "scanner.l"
 { count(); return(DEC_OP); }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 92 "scanner.l"
+#line 104 "scanner.l"
 { count(); return(PTR_OP); }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 93 "scanner.l"
+#line 105 "scanner.l"
 { count(); return(AND_OP); }
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 94 "scanner.l"
+#line 106 "scanner.l"
 { count(); return(OR_OP); }
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 95 "scanner.l"
+#line 107 "scanner.l"
 { count(); return(LE_OP); }
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 96 "scanner.l"
+#line 108 "scanner.l"
 { count(); return(GE_OP); }
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 97 "scanner.l"
+#line 109 "scanner.l"
 { count(); return(EQ_OP); }
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 98 "scanner.l"
+#line 110 "scanner.l"
 { count(); return(NE_OP); }
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 99 "scanner.l"
+#line 111 "scanner.l"
 { count(); return(';'); }
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 100 "scanner.l"
+#line 112 "scanner.l"
 { count(); return('{'); }
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 101 "scanner.l"
+#line 113 "scanner.l"
 { count(); return('{'); }
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 102 "scanner.l"
+#line 114 "scanner.l"
 { count(); return('}'); }
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 103 "scanner.l"
+#line 115 "scanner.l"
 { count(); return(','); }
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 104 "scanner.l"
+#line 116 "scanner.l"
 { count(); return(':'); }
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 105 "scanner.l"
+#line 117 "scanner.l"
 { count(); return('='); }
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 106 "scanner.l"
+#line 118 "scanner.l"
 { count(); return('('); }
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 107 "scanner.l"
+#line 119 "scanner.l"
 { count(); return(')'); }
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 108 "scanner.l"
+#line 120 "scanner.l"
 { count(); return('['); }
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 109 "scanner.l"
+#line 121 "scanner.l"
 { count(); return(']'); }
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
-#line 110 "scanner.l"
+#line 122 "scanner.l"
 { count(); return('.'); }
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
-#line 111 "scanner.l"
+#line 123 "scanner.l"
 { count(); return('&'); }
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 112 "scanner.l"
+#line 124 "scanner.l"
 { count(); return('!'); }
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 113 "scanner.l"
+#line 125 "scanner.l"
 { count(); return('~'); }
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 114 "scanner.l"
+#line 126 "scanner.l"
 { count(); return('-'); }
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 115 "scanner.l"
+#line 127 "scanner.l"
 { count(); return('+'); }
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 116 "scanner.l"
+#line 128 "scanner.l"
 { count(); return('*'); }
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
-#line 117 "scanner.l"
+#line 129 "scanner.l"
 { count(); return('/'); }
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 118 "scanner.l"
+#line 130 "scanner.l"
 { count(); return('%'); }
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 119 "scanner.l"
+#line 131 "scanner.l"
 { count(); return('<'); }
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 120 "scanner.l"
+#line 132 "scanner.l"
 { count(); return('>'); }
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
-#line 121 "scanner.l"
+#line 133 "scanner.l"
 { count(); return('^'); }
 	YY_BREAK
 case 88:
 YY_RULE_SETUP
-#line 122 "scanner.l"
+#line 134 "scanner.l"
 { count(); return('|'); }
 	YY_BREAK
 case 89:
 YY_RULE_SETUP
-#line 123 "scanner.l"
+#line 135 "scanner.l"
 { count(); return('?'); }
 	YY_BREAK
 case 90:
 /* rule 90 can match eol */
 YY_RULE_SETUP
-#line 125 "scanner.l"
+#line 137 "scanner.l"
 { count(); }
 	YY_BREAK
 case 91:
 YY_RULE_SETUP
-#line 126 "scanner.l"
+#line 138 "scanner.l"
 { /* ignore bad characters */ }
 	YY_BREAK
 case 92:
 YY_RULE_SETUP
-#line 128 "scanner.l"
+#line 140 "scanner.l"
 BEGIN(incl);
 	YY_BREAK
 case 93:
 YY_RULE_SETUP
-#line 129 "scanner.l"
+#line 141 "scanner.l"
 /* eat the whitespace */
 	YY_BREAK
 case 94:
 YY_RULE_SETUP
-#line 130 "scanner.l"
+#line 142 "scanner.l"
 { /* got the include file name */
-											printf("Voy a intentar abril el fle %s\n", yytext);
 
 											readIncludeFile(yytext);
 
@@ -1444,20 +1452,21 @@ YY_RULE_SETUP
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(incl):
-#line 139 "scanner.l"
+#line 150 "scanner.l"
 {
      			yypop_buffer_state();
 					if ( !YY_CURRENT_BUFFER ){
               yyterminate();
           }
+
         }
 	YY_BREAK
 case 95:
 YY_RULE_SETUP
-#line 146 "scanner.l"
+#line 158 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 1461 "prep_scanner.c"
+#line 1470 "prep_scanner.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -2465,14 +2474,13 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 146 "scanner.l"
+#line 158 "scanner.l"
 
 
 
 void readIncludeFile(char *filename){
 	FILE *file = fopen( filename, "r" );
 	if (file){
-			printf("Si logramos abrir el file \n");
 			YY_BUFFER_STATE bufferInclude = yy_create_buffer(file,YY_BUF_SIZE);
 			if(bufferInclude){
 				yypush_buffer_state(YY_CURRENT_BUFFER);
@@ -2484,6 +2492,8 @@ void readIncludeFile(char *filename){
 		printf("Problem with incluyeme file\n");
 	}
 }
+
+
 
 void _remove(){
 
@@ -2533,5 +2543,38 @@ void count()
 static int check_type()
 {
 	return(IDENTIFIER);
+}
+
+
+
+void yyerror(const char *s)
+{
+	fflush(stdout);
+	printf("\n%*s\n%*s in line: %d\n", column, "^", column, s, yylineno);
+
+}
+
+
+void readFile(FILE *filename){
+		yyin = filename;
+		FILE* fpLatex = freopen("fuenteLatex.txt","w",stdout);
+		yyparse();
+		fclose(fpLatex);
+
+
+
+}
+
+int main( int argc, char *argv[]) {
+
+	FILE *myfile = fopen("processedFile.c", "r");
+
+	if (!myfile) {
+		printf("I can't open my processed file!\n");
+		exit(0);
+	}
+
+	readFile(myfile);
+
 }
 
