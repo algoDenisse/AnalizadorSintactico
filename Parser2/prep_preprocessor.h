@@ -1,10 +1,10 @@
-#ifndef yyHEADER_H
-#define yyHEADER_H 1
-#define yyIN_HEADER 1
+#ifndef pprcHEADER_H
+#define pprcHEADER_H 1
+#define pprcIN_HEADER 1
 
-#line 6 "prep_scanner.h"
+#line 6 "prep_preprocessor.h"
 
-#line 8 "prep_scanner.h"
+#line 8 "prep_preprocessor.h"
 
 #define  YY_INT_ALIGNED short int
 
@@ -131,9 +131,9 @@ typedef unsigned int flex_uint32_t;
 typedef struct yy_buffer_state *YY_BUFFER_STATE;
 #endif
 
-extern int yyleng;
+extern int pprcleng;
 
-extern FILE *yyin, *yyout;
+extern FILE *pprcin, *pprcout;
 
 #ifndef YY_TYPEDEF_YY_SIZE_T
 #define YY_TYPEDEF_YY_SIZE_T
@@ -191,32 +191,34 @@ struct yy_buffer_state
 	};
 #endif /* !YY_STRUCT_YY_BUFFER_STATE */
 
-void yyrestart (FILE *input_file  );
-void yy_switch_to_buffer (YY_BUFFER_STATE new_buffer  );
-YY_BUFFER_STATE yy_create_buffer (FILE *file,int size  );
-void yy_delete_buffer (YY_BUFFER_STATE b  );
-void yy_flush_buffer (YY_BUFFER_STATE b  );
-void yypush_buffer_state (YY_BUFFER_STATE new_buffer  );
-void yypop_buffer_state (void );
+void pprcrestart (FILE *input_file  );
+void pprc_switch_to_buffer (YY_BUFFER_STATE new_buffer  );
+YY_BUFFER_STATE pprc_create_buffer (FILE *file,int size  );
+void pprc_delete_buffer (YY_BUFFER_STATE b  );
+void pprc_flush_buffer (YY_BUFFER_STATE b  );
+void pprcpush_buffer_state (YY_BUFFER_STATE new_buffer  );
+void pprcpop_buffer_state (void );
 
-YY_BUFFER_STATE yy_scan_buffer (char *base,yy_size_t size  );
-YY_BUFFER_STATE yy_scan_string (yyconst char *yy_str  );
-YY_BUFFER_STATE yy_scan_bytes (yyconst char *bytes,int len  );
+YY_BUFFER_STATE pprc_scan_buffer (char *base,yy_size_t size  );
+YY_BUFFER_STATE pprc_scan_string (yyconst char *yy_str  );
+YY_BUFFER_STATE pprc_scan_bytes (yyconst char *bytes,int len  );
 
-void *yyalloc (yy_size_t  );
-void *yyrealloc (void *,yy_size_t  );
-void yyfree (void *  );
+void *pprcalloc (yy_size_t  );
+void *pprcrealloc (void *,yy_size_t  );
+void pprcfree (void *  );
 
 /* Begin user sect3 */
 
-extern int yylineno;
+#define pprcwrap(n) 1
+#define YY_SKIP_YYWRAP
 
-extern char *yytext;
-#define yytext_ptr yytext
+extern int pprclineno;
+
+extern char *pprctext;
+#define yytext_ptr pprctext
 
 #ifdef YY_HEADER_EXPORT_START_CONDITIONS
 #define INITIAL 0
-#define incl 1
 
 #endif
 
@@ -235,31 +237,31 @@ extern char *yytext;
 /* Accessor methods to globals.
    These are made visible to non-reentrant scanners for convenience. */
 
-int yylex_destroy (void );
+int pprclex_destroy (void );
 
-int yyget_debug (void );
+int pprcget_debug (void );
 
-void yyset_debug (int debug_flag  );
+void pprcset_debug (int debug_flag  );
 
-YY_EXTRA_TYPE yyget_extra (void );
+YY_EXTRA_TYPE pprcget_extra (void );
 
-void yyset_extra (YY_EXTRA_TYPE user_defined  );
+void pprcset_extra (YY_EXTRA_TYPE user_defined  );
 
-FILE *yyget_in (void );
+FILE *pprcget_in (void );
 
-void yyset_in  (FILE * in_str  );
+void pprcset_in  (FILE * in_str  );
 
-FILE *yyget_out (void );
+FILE *pprcget_out (void );
 
-void yyset_out  (FILE * out_str  );
+void pprcset_out  (FILE * out_str  );
 
-int yyget_leng (void );
+int pprcget_leng (void );
 
-char *yyget_text (void );
+char *pprcget_text (void );
 
-int yyget_lineno (void );
+int pprcget_lineno (void );
 
-void yyset_lineno (int line_number  );
+void pprcset_lineno (int line_number  );
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -267,9 +269,9 @@ void yyset_lineno (int line_number  );
 
 #ifndef YY_SKIP_YYWRAP
 #ifdef __cplusplus
-extern "C" int yywrap (void );
+extern "C" int pprcwrap (void );
 #else
-extern int yywrap (void );
+extern int pprcwrap (void );
 #endif
 #endif
 
@@ -306,9 +308,9 @@ static int yy_flex_strlen (yyconst char * );
 #ifndef YY_DECL
 #define YY_DECL_IS_OURS 1
 
-extern int yylex (void);
+extern int pprclex (void);
 
-#define YY_DECL int yylex (void)
+#define YY_DECL int pprclex (void)
 #endif /* !YY_DECL */
 
 /* yy_get_previous_state - get the state just before the EOB char was reached */
@@ -325,9 +327,9 @@ extern int yylex (void);
 #undef YY_DECL
 #endif
 
-#line 153 "scanner.l"
+#line 45 "pprc_preprocessor.l"
 
 
-#line 332 "prep_scanner.h"
-#undef yyIN_HEADER
-#endif /* yyHEADER_H */
+#line 334 "prep_preprocessor.h"
+#undef pprcIN_HEADER
+#endif /* pprcHEADER_H */

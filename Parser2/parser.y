@@ -40,14 +40,17 @@ primary_expression
 	| CONSTANT
 	| STRING_LITERAL
 	| '(' expression ')'
+	| '(' error ')' {yyerrok; yyclearin;}
 
 	;
 
 postfix_expression
 	: primary_expression
 	| postfix_expression '[' expression ']'
+	| postfix_expression '[' error ']' {yyerrok; yyclearin;}
 	| postfix_expression '(' ')'
 	| postfix_expression '(' argument_expression_list ')'
+	| postfix_expression '(' error ')' {yyerrok; yyclearin;}
 	| postfix_expression '.' IDENTIFIER
 	| postfix_expression PTR_OP IDENTIFIER
 	| postfix_expression INC_OP
@@ -80,6 +83,7 @@ unary_operator
 cast_expression
 	: unary_expression
 	| '(' type_name ')' cast_expression
+	| '(' error ')' cast_expression {yyerrok; yyclearin;}
 	;
 
 multiplicative_expression
@@ -87,6 +91,7 @@ multiplicative_expression
 	| multiplicative_expression '*' cast_expression
 	| multiplicative_expression '/' cast_expression
 	| multiplicative_expression '%' cast_expression
+	| error {yyerrok; yyclearin;}
 	;
 
 additive_expression

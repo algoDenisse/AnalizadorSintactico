@@ -1,6 +1,20 @@
-void sayHi(){
-  printf("Helloooooo\n" )
-}
-^
-syntax error, unexpected '}', expecting ',' or ';' in line: 3
+FILE *
+     ^
+syntax error, unexpected '*' in line: 1
+file;
+          ^
+syntax error, unexpected ';' in line: 1
 
+
+
+int main ()
+{
+   char ch;
+
+   for(ch = 'A'; ch <= 'Z' ; ch++)
+   {
+      putchar(ch);
+   }
+
+   return(0);
+}

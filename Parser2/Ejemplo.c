@@ -1,13 +1,12 @@
-#include "chara.c"
-
 int main ()
 {
-   char ch;
+   char ch_R;
+   FILE * file;
 
    for(ch = 'A'; ch <= 'Z' ; ch++)
    {
       putchar(ch);
    }
 
-   return(0)
+   return(0);
 }

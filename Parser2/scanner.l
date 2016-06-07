@@ -20,7 +20,7 @@ IS			(u|U|l|L)*
 #include "parser.tab.h"
 static void comment(void);
 static int check_type(void);
-void readIncludeFile(char *filename);
+//void readIncludeFile(char *filename);
 void count();
 void _remove();
 
@@ -30,10 +30,11 @@ int yylineno;
 FILE *beamerFile;
 FILE *yyin;
 void yyerror(const char *s);
-void beamerParseFile(FILE *filename);
-void parseFile(FILE *filename);
+void beamerParseFile();
+void parseFile();
+void parse(FILE *filename,int type);
 
-char specialCommand[2];
+
 
 
 
@@ -139,15 +140,7 @@ L?\"(\\.|[^\\"])*\"	{ count(); return(STRING_LITERAL); }
 [ \t\v\n\f]		{ count(); }
 .			{ /* ignore bad characters */ }
 
-#include             BEGIN(incl);
-<incl>[ \t]*      /* eat the whitespace */
-<incl>[^ "\t\n]+   { /* got the include file name */
 
-											readIncludeFile(yytext);
-
-											BEGIN(INITIAL);
-
-										}
 
 <<EOF>> {
      			yypop_buffer_state();
@@ -159,7 +152,7 @@ L?\"(\\.|[^\\"])*\"	{ count(); return(STRING_LITERAL); }
 
 %%
 
-void readIncludeFile(char *filename){
+/*void readIncludeFile(char *filename){
 	FILE *file = fopen( filename, "r" );
 	if (file){
 			YY_BUFFER_STATE bufferInclude = yy_create_buffer(file,YY_BUF_SIZE);
@@ -172,7 +165,7 @@ void readIncludeFile(char *filename){
 	else{
 		printf("Problem with incluyeme file\n");
 	}
-}
+}*/
 
 
 
@@ -247,43 +240,19 @@ void beamerParseFile(FILE *filename){
 void parseFile(FILE *filename){
 		yyin = filename;
 		yyparse();
-		
+
 
 }
 
-int main( int argc, char *argv[]) {
-	
-	strcpy(specialCommand, "-B");
-	char filename [100]="";
-	printf( "Ingrese el archivo: ");
-	scanf("%s",filename);
-	
-	if (strcmp(filename,specialCommand)==0){
-		
-		char filename [100]="";
-		printf( "Ingrese el archivo para Beamer: ");
-		scanf("%s",filename);
-		FILE *bFile = fopen(filename, "r");
-		
-		if (!bFile) {
-			printf("I can't open my processed file!\n");
-			exit(0);
-		}
-		
-		beamerParseFile(bFile);
+void parse(FILE *filename,int type) {
+
+	if (type == 0){
+		//si me indican -B
+		beamerParseFile(filename);
 		exit(0);
 	}
-	
-	FILE *myfile = fopen(filename, "r");
-	
-	if (!myfile) {
-		printf("I can't open my processed file!\n");
-		exit(0);
-	}
-	
-	parseFile(myfile);
 
+	parseFile(filename);
 
-	
 
 }

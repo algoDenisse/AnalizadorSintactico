@@ -150,7 +150,6 @@ string 		\"(\\.|[^"])*\"
 
 void openFilePath(YY_BUFFER_STATE buffer,FILE *output){
 	yy_switch_to_buffer (buffer); // Nos pasamos al buffer principal.
-	printf("Llevamos %d files incluidos\n", includedFiles_count);
 
 	while((current_token= yylex())!= EOF){
 		// Mientras haya algo que leer...
@@ -158,7 +157,6 @@ void openFilePath(YY_BUFFER_STATE buffer,FILE *output){
 		if(current_token == INCLUDE){
 				current_token = yylex(); // verifica que el file path empiece con comillas
 				if(current_token == QUOTES){
-					printf("Encontramos las comillas principales\n");
 					current_token = yylex(); //obtenemos el nombre del archivo
 					if (current_token == FILENAME){
 						FILE* file = fopen(_name, "r");
@@ -348,10 +346,11 @@ void preprocess_file(FILE *originalFile, char* filename){
 	}
 }
 
-void readFile(){
-	char filename [100]="";
-	printf( "Ingrese el archivo: ");
-	scanf("%s",filename);
+void readFile(char* filename){
 	FILE *originalFile = fopen( filename, "r" );
+	if (!originalFile) {
+	 printf("Error al abrir el archivo especificado.\n");
+	  exit(0);
+	}
 	preprocess_file(originalFile, filename);
 }
