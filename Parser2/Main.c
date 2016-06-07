@@ -4,10 +4,6 @@
 #include "prep_preprocessor.h"
 #include "global.h"
 
-void createBeamerFile(){
-
-}
-
 
 int main( int argc, char *argv[] )
 {
@@ -28,7 +24,7 @@ int main( int argc, char *argv[] )
     FILE *prep_file = fopen("processedFile.txt", "r");
     parse(prep_file, 0);
     //Empieza a leer FuenteLatex.txt
-    //createBeamerFile();
+
 
     fclose(prep_file);
     exit(0);

@@ -1,15 +1,7 @@
-FILE *
-     ^
-syntax error, unexpected '*' in line: 1
-file;
-          ^
-syntax error, unexpected ';' in line: 1
-
-
-
 int main ()
 {
-   char ch;
+   char ch_R;
+   FILE * file;
 
    for(ch = 'A'; ch <= 'Z' ; ch++)
    {
