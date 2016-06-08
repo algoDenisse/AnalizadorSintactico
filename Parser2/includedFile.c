@@ -6,7 +6,3 @@ int main(){
   printf("Five times my age: %d", (AGE + DOUBLEAGE));
   open_file();
 }
-
-void open_file(){
-   printf("HOLA, como estas? \n");
-}

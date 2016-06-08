@@ -87,6 +87,10 @@ string 		\"(\\.|[^"])*\"
 	    //printf("nuevaLinea");
 	    fprintf(processed_File,"%s","\n");
 	   }
+		 else if(ongoing_token == QUOTES){
+			 // Copia cambios de linea
+			 fprintf(processed_File,"%s", _name);
+		 }
 		 else if (ongoing_token== TAB){
 	    //printf("tab");
 	    fprintf(processed_File,"%s","\t");
@@ -104,7 +108,6 @@ string 		\"(\\.|[^"])*\"
 		while((current_token= yylex())!= EOF){
 			// Mientras haya algo que leer...
 			if(current_token == DEFINE){
-				printf("Estoy procesando el define\n");
 			   string c_name;
 			   string value;
 			   yylex(); //nombre
@@ -112,12 +115,12 @@ string 		\"(\\.|[^"])*\"
 			   current_token = yylex();// espacio
 			   current_token = yylex();// espera encontrar un valor
 			   if(current_token == VALUE || current_token == CODIGO){
-			    //printf("Lo que se espera que haya en el valor es: %s\n", _name);
+
 			    strcpy(value,_name);
 			   }
-				 //printf("Current Token %s\n", _name);
+
 			   //una vez encontrados,llamamos función que lo reemplaza
-				 //printf("Se reemplaza -> Nombre:%s\nValor:%s\n", c_name,value);
+				 
 				 yylex();
 			   YY_BUFFER_STATE bufferDef = replace_define(c_name,value);
 				 yy_switch_to_buffer (bufferDef);
@@ -141,6 +144,11 @@ string 		\"(\\.|[^"])*\"
 				fprintf(processed_File,"%s", "\n");
 			}
 			else if(current_token == VALUE){
+				// Copia cambios de linea
+				fprintf(processed_File,"%s", _name);
+			}
+			else if(current_token == QUOTES){
+
 				// Copia cambios de linea
 				fprintf(processed_File,"%s", _name);
 			}
@@ -215,6 +223,10 @@ void openFilePath(YY_BUFFER_STATE buffer,FILE *output){
 		else if(current_token == QUOTES){
 			// Copia cambios de linea
 			fprintf(output,"%s",_name);
+		}
+		else if(current_token == LIBRARY){
+			// Copia cambios de linea
+			fprintf(output,"%s", _name);
 		}
 		else if(current_token == LIBRARY){
 			// Copia cambios de linea

@@ -2528,7 +2528,7 @@ void yyerror(const char *s)
 
 void beamerParseFile(FILE *filename){
 		yyin = filename;
-		FILE* fpLatex = freopen("fuenteLatex.txt","w",stdout);
+		FILE* fpLatex = freopen("fuenteLatex.txt","wb",stdout);
 		yyparse();
 		fclose(fpLatex);
    createBeamerFile();
@@ -2537,7 +2537,7 @@ void beamerParseFile(FILE *filename){
 
 void createBeamerFile(){
 
-   FILE* beamerFile = fopen( "beamerFile.tex", "w+" );
+   FILE* beamerFile = fopen( "beamerFile.tex", "w" );
 
    FILE *finalFile;
    int c;
@@ -2622,6 +2622,11 @@ void createBeamerFile(){
          slide_lines++;
 
        }
+       else if(c == '"'){
+         fprintf(beamerFile,"\\textcolor{%s}{%s}\n", "PineGreen" ,"'\\hspace{0pt}'");
+         slide_lines++;
+
+       }
        else if(c == '<'){
          if(fgetc(finalFile) == '='){
            fprintf(beamerFile, "\\textcolor{%s}{%s}\n", "PineGreen", "\\textless =");
@@ -2703,7 +2708,7 @@ void createBeamerFile(){
    //Final del documento
    fprintf(beamerFile,"\\end{document}");
    fclose(beamerFile);
-  system("pdflatex beamerFile.tex");
+  //system("pdflatex beamerFile.tex");
   // system("evince beamerFile.pdf");
 
 }
@@ -2720,10 +2725,13 @@ void parse(FILE *filename,int type) {
 	if (type == 0){
 		//si me indican -B
 		beamerParseFile(filename);
-		exit(0);
-	}
 
-	parseFile(filename);
+		//exit(0);
+	}
+  else{
+    parseFile(filename);
+  }
+
 
 
 }

@@ -24,10 +24,9 @@ int main( int argc, char *argv[] )
     FILE *prep_file = fopen("processedFile.txt", "r");
     parse(prep_file, 0);
     //Empieza a leer FuenteLatex.txt
-
-
-
     fclose(prep_file);
+    //system("pdflatex beamerFile.tex");
+    ///system("evince beamerFile.pdf");
     exit(0);
   }
 

@@ -1,3 +1,10 @@
-void sayHi(){
-  printf(Helloooooo\n )
+int main(){
+  int a = 10;
+  int b = 2  20;
+  printf("Five times my age: %d", (10 + 20));
+  open_file();
+}
+
+void open_file(){
+   printf("HOLA, como estas? \n");
 }

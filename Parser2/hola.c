@@ -1,3 +1,4 @@
-void sayHi(){
-  printf("Helloooooo\n" )
+int main (){
+ int hola;
+ char adios
 }

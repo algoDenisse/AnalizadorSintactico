@@ -177,6 +177,7 @@ constant_expression
 declaration
 	: declaration_specifiers ';'
 	| declaration_specifiers init_declarator_list ';'
+	| error { yyerrok; yyclearin;}
 	;
 
 declaration_specifiers
@@ -196,6 +197,7 @@ init_declarator_list
 init_declarator
 	: declarator
 	| declarator '=' initializer
+	| error { yyerrok; yyclearin;}
 	;
 
 storage_class_specifier
@@ -350,6 +352,7 @@ direct_abstract_declarator
 	| '(' parameter_type_list ')'
 	| direct_abstract_declarator '(' ')'
 	| direct_abstract_declarator '(' parameter_type_list ')'
+	| error { yyerrok; yyclearin;}
 	;
 
 initializer
@@ -434,7 +437,6 @@ translation_unit
 external_declaration
 	: function_definition
 	| declaration
-	| error { yyerrok; yyclearin;}
 	;
 
 function_definition
