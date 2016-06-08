@@ -1,12 +1,32 @@
-int main ()
+int main( int argc, char *argv[] )
 {
-   char ch_R;
-   FILE * file;
 
-   for(ch = 'A'; ch <= 'Z' ; ch++)
-   {
-      putchar(ch);
-   }
+  strcpy(specialCommand, "-B");
+	char filename [100]="";
+	printf( "Ingrese el archivo: ");
+	scanf("%s",filename);
 
-   return(0);
+  if (strcmp(filename,specialCommand)==0){
+    //Indica comando -B
+
+    char filename [100]="";
+    printf( "Ingrese el archivo para Beamer: ");
+    scanf("%s",filename);
+
+    readFile(filename);
+    FILE *prep_file = fopen("processedFile.txt", "r");
+    parse(prep_file, 0);
+    //Empieza a leer FuenteLatex.txt
+
+
+
+    fclose(prep_file);
+    exit(0);
+  }
+
+  readFile(filename);
+  FILE *prep_file = fopen("processedFile.txt", "r");
+  parse(prep_file, 1);
+  fclose(prep_file);
+
 }

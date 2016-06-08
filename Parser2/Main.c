@@ -10,7 +10,7 @@ int main( int argc, char *argv[] )
 
   strcpy(specialCommand, "-B");
 	char filename [100]="";
-	printf( "Ingrese el archivo: ");
+	printf( "Ingrese el archivo o '-B' para crear presentacion Beamer: ");
 	scanf("%s",filename);
 
   if (strcmp(filename,specialCommand)==0){
@@ -24,6 +24,7 @@ int main( int argc, char *argv[] )
     FILE *prep_file = fopen("processedFile.txt", "r");
     parse(prep_file, 0);
     //Empieza a leer FuenteLatex.txt
+
 
 
     fclose(prep_file);

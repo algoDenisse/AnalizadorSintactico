@@ -1,12 +1,12 @@
-int main ()
-{
-   char ch_R;
-   FILE * file;
+void sayHi(){
+  printf(Helloooooon
+                   ^
+syntax error, unexpected IDENTIFIER, expecting ')' or ',' in line: 2
+ )
+                     ^
+syntax error, unexpected ')' in line: 2
 
-   for(ch = 'A'; ch <= 'Z' ; ch++)
-   {
-      putchar(ch);
-   }
-
-   return(0);
 }
+^
+syntax error, unexpected '}' in line: 3
+

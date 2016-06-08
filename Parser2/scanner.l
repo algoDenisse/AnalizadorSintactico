@@ -234,7 +234,180 @@ void beamerParseFile(FILE *filename){
 		FILE* fpLatex = freopen("fuenteLatex.txt","w",stdout);
 		yyparse();
 		fclose(fpLatex);
-    createBeamerFile();
+   createBeamerFile();
+
+}
+
+void createBeamerFile(){
+
+   FILE* beamerFile = fopen( "beamerFile.tex", "w+" );
+
+   FILE *finalFile;
+   int c;
+   int n = 0;
+   int slide_lines = 0;
+
+   //Declaraciones para el documento latex
+   fprintf(beamerFile, "\\documentclass[8, usernames, dvipsnames]{beamer}\n");
+   fprintf(beamerFile, "\\usepackage{color}\n");
+   fprintf(beamerFile, "\\usepackage{dirtytalk}\n");
+   fprintf(beamerFile, "\\usepackage[spanish]{babel}\n");
+   fprintf(beamerFile, "\\usepackage[utf8]{inputenc}\n");
+
+
+   fprintf(beamerFile, "\\usetheme{Warsaw}\n");
+   fprintf(beamerFile, "\\usecolortheme{spruce}\n");
+   fprintf(beamerFile, "\\setbeamercolor{normal text}{bg=white!80}\n");
+
+
+
+   fprintf(beamerFile,"\\begin{document} \n");
+
+   //TITULO
+
+   fprintf(beamerFile, "\\title{\n");
+   fprintf(beamerFile, "\\begin{Large}\n");
+   fprintf(beamerFile, "TEC\n");
+   fprintf(beamerFile, "\\end{Large}\n");
+   fprintf(beamerFile, "\\newline\n");
+   fprintf(beamerFile, "\\begin{Large}\n");
+   fprintf(beamerFile, "\\\\Compiladores e Int\\'erpretes\n");
+   fprintf(beamerFile, "\\\\Proyecto \\#3: Analizador Sint\\'actico\n");
+   fprintf(beamerFile, "\\\\Profesor: Francisco Torres\n");
+   fprintf(beamerFile, "\\end{Large}\n");
+   fprintf(beamerFile, "}\n");
+   fprintf(beamerFile, "\\author{Dennisse Rojas Casanova\n");
+   fprintf(beamerFile, "\\\\Treicy S\\'anchez Guti\\'errez}\n");
+   fprintf(beamerFile, "\\date{\\today}\n");
+   fprintf(beamerFile,"\\maketitle \n");
+
+
+
+   //Parser Y Bison
+   fprintf(beamerFile,"\\begin{frame} \n");
+   fprintf(beamerFile, "\\begin{center}\n");
+   fprintf(beamerFile,"\\frametitle{An\\'alisis Sint\\'actico} \n");
+   fprintf(beamerFile,"El analizador Sint\\'actico revisa que la sint\\'axis de un porgrama este correcta, tomando la secuencia de tokens ");
+   fprintf(beamerFile,"y verificando que sean construcciones v\\'alidas con ayuda de una gram\\'atica");
+   fprintf(beamerFile, "\\end{center}\n");
+   fprintf(beamerFile,"\\end{frame} \n");
+
+   fprintf(beamerFile,"\\begin{frame} \n");
+   fprintf(beamerFile, "\\begin{center}\n");
+   fprintf(beamerFile,"\\frametitle{Bison} \n");
+   fprintf(beamerFile,"Bison toma la gram\\'atica que especificas y escribe un Parser que reconozca sentencias ");
+   fprintf(beamerFile,"v\\'alidas en esa gram\\'atica");
+   fprintf(beamerFile, "\\end{center}\n");
+   fprintf(beamerFile,"\\end{frame} \n");
+
+  //Codigo Funte
+
+   fprintf(beamerFile,"\\begin{frame} \n");
+
+
+   finalFile= fopen("fuenteLatex.txt", "r");
+
+   do
+    {
+      if(slide_lines == 12) {
+      fprintf(beamerFile, "\\end{frame}\n");
+      fprintf(beamerFile, "\\begin{frame}\n");
+      slide_lines = 0;
+      }
+
+       c = fgetc(finalFile);
+       if( feof(finalFile) )
+       {
+          break ;
+       }
+       else if(c == '\n'){
+         fprintf(beamerFile,"\n");
+         slide_lines++;
+
+       }
+       else if(c == '<'){
+         if(fgetc(finalFile) == '='){
+           fprintf(beamerFile, "\\textcolor{%s}{%s}\n", "PineGreen", "\\textless =");
+           c = fgetc(finalFile);
+           }
+         else{
+         fprintf(beamerFile, "\\textcolor{%s}{%s}\n", "PineGreen", "\\textless");}
+
+       }
+
+       else if(c == '>'){
+         if(fgetc(finalFile) == '='){
+           fprintf(beamerFile, "\\textcolor{%s}{%s}\n", "PineGreen", "\\textgreater =");
+           c = fgetc(finalFile);
+           }
+         else{
+           fprintf(beamerFile, "\\textcolor{%s}{%s}\n", "PineGreen", "\\textgreater ");}
+
+       }
+
+       else if(c == '='){
+
+
+         fprintf(beamerFile, "\\textcolor{%s}{%c}\n", "PineGreen", c);
+       }
+
+       else if(c == '_'){
+         fprintf(beamerFile, "\\textcolor{%s}{%s}\n", "PineGreen", "\\textunderscore");
+       }
+       else if(c == '{'){
+         fprintf(beamerFile, "\\textcolor{%s}{$%s$}\n", "PineGreen", "\\{");
+       }
+       else if(c == '}'){
+         fprintf(beamerFile, "\\textcolor{%s}{$%s$}\n", "PineGreen", "\\}");
+       }
+       else if(c == ' '){
+         fprintf(beamerFile, "\\textcolor{%s}{\\ }\n", "White");
+
+       }
+
+       else if(c == '\t'){
+         fprintf(beamerFile, "\\textcolor{%s}{\\%s }\n", "White", "qquad " );
+
+       }
+       else if(c == '~'){
+         fprintf(beamerFile, "\\textcolor{%s}{%s}\n", "PineGreen", "\\textasciitilde");
+       }
+       else if(c == '&'){
+         fprintf(beamerFile, "\\textcolor{%s}{%s}\n", "PineGreen", "\\&");
+       }
+       else if (c == '^'){
+         fprintf(beamerFile, "\\textcolor{%s}{%s}\n", "Red", "\\textasciicircum");
+         while((c = fgetc(finalFile)) != ','){
+           fprintf(beamerFile, "\\textcolor{%s}{%c}\n", "Red", c);
+         }
+       }
+       else if(c == '%'){
+         fprintf(beamerFile, "\\textcolor{%s}{%s}\n", "PineGreen", "\\%");
+       }
+       else if(c == '\\'){
+         fprintf(beamerFile, "\\textcolor{%s}{%s }\n", "PineGreen", "\\textbackslash");
+
+       }
+       else{
+
+       fprintf(beamerFile, "\\textcolor{%s}{%c}\n", "PineGreen", c);
+     }
+    }while(1);
+
+
+   fclose(finalFile);
+
+
+   fprintf(beamerFile,"\\end{frame} \n");
+
+
+
+
+   //Final del documento
+   fprintf(beamerFile,"\\end{document}");
+   fclose(beamerFile);
+  system("pdflatex beamerFile.tex");
+  // system("evince beamerFile.pdf");
 
 }
 
@@ -255,159 +428,5 @@ void parse(FILE *filename,int type) {
 
 	parseFile(filename);
 
-
-}
-
-void createBeamerFile(){
-  FILE* beamerFile = fopen( "beamerFile.tex", "w+" );
-
-  FILE *finalFile;
-  int c;
-  int n = 0;
-  int slide_lines = 0;
-
-  //Declaraciones para el documento latex
-  fprintf(beamerFile, "\\documentclass[8, usernames, dvipsnames]{beamer}\n");
-  fprintf(beamerFile, "\\usepackage{color}\n");
-  fprintf(beamerFile, "\\usepackage{dirtytalk}\n");
-  fprintf(beamerFile, "\\usepackage[spanish]{babel}\n");
-  fprintf(beamerFile, "\\usepackage[utf8]{inputenc}\n");
-
-
-  fprintf(beamerFile, "\\usetheme{Warsaw}\n");
-  fprintf(beamerFile, "\\usecolortheme{spruce}\n");
-  fprintf(beamerFile, "\\setbeamercolor{normal text}{bg=white!80}\n");
-
-
-
-  fprintf(beamerFile,"\\begin{document} \n");
-
-  //TITULO
-
-  fprintf(beamerFile, "\\title{\n");
-  fprintf(beamerFile, "\\begin{Large}\n");
-  fprintf(beamerFile, "TEC\n");
-  fprintf(beamerFile, "\\end{Large}\n");
-  fprintf(beamerFile, "\\newline\n");
-  fprintf(beamerFile, "\\begin{Large}\n");
-  fprintf(beamerFile, "\\\\Compiladores e Int\\'erpretes\n");
-  fprintf(beamerFile, "\\\\Proyecto \\#3: Analizador Sint\\'actico\n");
-  fprintf(beamerFile, "\\\\Profesor: Francisco Torres\n");
-  fprintf(beamerFile, "\\end{Large}\n");
-  fprintf(beamerFile, "}\n");
-  fprintf(beamerFile, "\\author{Dennisse Rojas Casanova\n");
-  fprintf(beamerFile, "\\\\Treicy S\\'anchez Guti\\'errez}\n");
-  fprintf(beamerFile, "\\date{\\today}\n");
-  fprintf(beamerFile,"\\maketitle \n");
-
-
-
-  //Parser Y Bison
-  fprintf(beamerFile,"\\begin{frame} \n");
-  fprintf(beamerFile, "\\begin{center}\n");
-  fprintf(beamerFile,"\\frametitle{An\\'alisis Sint\\'actico} \n");
-  fprintf(beamerFile,"El analizador Sint\\'actico revisa que la sint\\'axis de un porgrama este correcta, tomando la secuencia de tokens ");
-  fprintf(beamerFile,"y verificando que sean construcciones v\\'alidas con ayuda de una gram\\'atica");
-  fprintf(beamerFile, "\\end{center}\n");
-  fprintf(beamerFile,"\\end{frame} \n");
-
-  fprintf(beamerFile,"\\begin{frame} \n");
-  fprintf(beamerFile, "\\begin{center}\n");
-  fprintf(beamerFile,"\\frametitle{Bison} \n");
-  fprintf(beamerFile,"Bison toma la gram\\'atica que especificas y escribe un Parser que reconozca sentencias ");
-  fprintf(beamerFile,"v\\'alidas en esa gram\\'atica");
-  fprintf(beamerFile, "\\end{center}\n");
-  fprintf(beamerFile,"\\end{frame} \n");
-
- //Codigo Funte
-
-  fprintf(beamerFile,"\\begin{frame} \n");
-
-
-  finalFile= fopen("fuenteLatex.txt", "r");
-
-  do
-   {
-     if(slide_lines == 12) {
-     fprintf(beamerFile, "\\end{frame}\n");
-     fprintf(beamerFile, "\\begin{frame}\n");
-     slide_lines = 0;
-     }
-
-      c = fgetc(finalFile);
-      if( feof(finalFile) )
-      {
-         break ;
-      }
-      else if(c == '\n'){
-        fprintf(beamerFile,"\n");
-        slide_lines++;
-
-      }
-      else if(c == '<'){
-        if(fgetc(finalFile) == '='){
-          fprintf(beamerFile, "\\textcolor{%s}{%s}\n", "PineGreen", "\\textless =");
-          c = fgetc(finalFile);
-          }
-        else{
-        fprintf(beamerFile, "\\textcolor{%s}{%s}\n", "PineGreen", "\\textless");}
-
-      }
-
-      else if(c == '>'){
-        if(fgetc(finalFile) == '='){
-          fprintf(beamerFile, "\\textcolor{%s}{%s}\n", "BurntOrange", "\\textgreater =");
-          c = fgetc(finalFile);
-          }
-        else{
-          fprintf(fpLatex, "\\textcolor{%s}{%s}\n", "BurntOrange", "\\textgreater ");}
-
-      }
-
-      else if(c == '='){
-
-
-        fprintf(beamerFile, "\\textcolor{%s}{%c}\n", "PineGreen", c);
-      }
-
-      else if(c == '_'){
-        fprintf(beamerFile, "\\textcolor{%s}{%s}\n", "PineGreen", "\\textunderscore");
-      }
-      else if(c == '{'){
-        fprintf(beamerFile, "\\textcolor{%s}{$%s$}\n", "PineGreen", "\\{");
-      }
-      else if(c == '}'){
-        fprintf(beamerFile, "\\textcolor{%s}{$%s$}\n", "PineGreen", "\\}");
-      }
-      else if(c == ' '){
-        fprintf(beamerFile, "\\textcolor{%s}{\\ }\n", "White");
-
-      }
-
-      else if(c == '\t'){
-        fprintf(beamerFile, "\\textcolor{%s}{\\%s }\n", "White", "qquad " );
-
-      }
-      else{
-
-      fprintf(beamerFile, "\\textcolor{%s}{%c}\n", "PineGreen", c);
-    }
-   }while(1);
-
-
-
-  fclose(finalFile);
-
-
-  fprintf(beamerFile,"\\end{frame} \n");
-
-
-
-
-  //Final del documento
-  fprintf(beamerFile,"\\end{document}");
-  fclose(beamerFile);
-  //system("pdflatex beamerFile.tex");
-  //system("evince beamerFile.pdf");
 
 }
